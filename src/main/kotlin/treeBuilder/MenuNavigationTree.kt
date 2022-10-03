@@ -1,18 +1,18 @@
 package mainBot
 
-class MenuNavigationTree {
+abstract class MenuNavigationTree {
 
-    class TreeNode<String>(private var value: String, val name: String = value) {
-        private var parent: TreeNode<String>? = null
-        var childrenList: MutableList<TreeNode<String>> = mutableListOf()
-        var childrenNamesList: MutableList<String> = mutableListOf()
-        private fun addChild(node: TreeNode<String>) {
+    class TreeNode<T>(private var value: T, val name: T = value) {
+        private var parent: TreeNode<T>? = null
+        var childrenList: MutableList<TreeNode<T>> = mutableListOf()
+        var childrenNamesList: MutableList<T> = mutableListOf()
+        private fun addChild(node: TreeNode<T>) {
             node.parent = this
             childrenList.add(node)
             childrenNamesList.add(node.name)
         }
 
-        fun addChildren(children: MutableList<String>) =
+        fun addChildren(children: MutableList<T>) =
             children.forEach {
                 addChild(TreeNode(it))
             }
@@ -21,8 +21,8 @@ class MenuNavigationTree {
 
         private fun hasParent(): Boolean = parent !== null
 
-        fun getPath(): MutableList<TreeNode<String>> {
-            val path = mutableListOf<TreeNode<String>>()
+        fun getPath(): MutableList<TreeNode<T>> {
+            val path = mutableListOf<TreeNode<T>>()
             if (this.hasParent()) {
                 path.let { list1 -> this.parent!!.getPath().let(list1::addAll) }
             }
@@ -30,7 +30,7 @@ class MenuNavigationTree {
             return path
         }
 
-        fun getNode(nodesIndices: MutableList<Int>? = null) : TreeNode<String> {
+        fun getNode(nodesIndices: MutableList<Int>? = null) : TreeNode<T> {
             if (nodesIndices.isNullOrEmpty()) return this
             return if (nodesIndices.size==1)
                 childrenList[nodesIndices[0]]
@@ -89,31 +89,45 @@ class MenuNavigationTree {
             val infoMenuList = mutableListOf(
                 "See Your Info",
                 "Change Your Info",
-                "Go back"
+                "Go back from info"
             )
             addNodes(menu, mutableListOf(0), infoMenuList)
             val friendsActions = mutableListOf(
+                "Public friends",
+                "Local friends",
+                "Go back from friends"
+            )
+            addNodes(menu, mutableListOf(1), friendsActions)
+            val publicFriends = mutableListOf(
                 "My friend list",
+                "Friend requests",
                 "Send friend request",
                 "Remove a friend",
                 "See friend's profile information",
                 "See friend's wishlist",
+                "Go back from public friends"
+            )
+            addNodes(menu, mutableListOf(1,0), publicFriends)
+            val localFriends = mutableListOf(
+                "My local friends",
                 "Create a local friend",
                 "Share my local friend",
-                "Go back"
+                "See local friend profile info",
+                "Go back from local friends"
             )
-            addNodes(menu, mutableListOf(1), friendsActions)
+            addNodes(menu, mutableListOf(1,1),localFriends)
             val notificationsActions = mutableListOf(
                 "My active notifications", //0
                 "Bot notifications", //1
                 "Single friend reminders settings", //2
                 "Multiple friend reminders settings", //3
-                "Go Back"
+                "Go Back from notifications"
             )
             addNodes(menu, mutableListOf(2), notificationsActions)
             val supportDeveloperActions = mutableListOf(
                 "Share this bot",
-                "Donate"
+                "Donate",
+                "Go back from support"
             )
             addNodes(menu, mutableListOf(3), supportDeveloperActions)
             val singleNotificationsActions = mutableListOf(
@@ -143,8 +157,7 @@ class MenuNavigationTree {
             println(menu)
             val node =
                 menu.childrenList[2].childrenList[3].childrenList[2]
-            //val node = getNode(mutableListOf(2,3,2)
-            val node2 = menu.getNode(mutableListOf(2,3,2))
+            val node2 = menu.getNode(mutableListOf(2,3,1))
             pathToCurrentNode = node.getPath()
             println("Path to ${node.name} is " + getStringPath(pathToCurrentNode))
             pathToCurrentNode = node2.getPath()
