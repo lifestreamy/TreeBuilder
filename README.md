@@ -5,4 +5,3 @@ I will probably add some documentation though the code appears to me to be strai
 
 Use jitpack.io to add this library, the main class is pre-populated with code so you can see exactly what you can do with this
 
-You can change node type from String to T, use TypeToken
