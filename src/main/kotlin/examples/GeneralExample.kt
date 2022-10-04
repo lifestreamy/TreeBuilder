@@ -1,57 +1,41 @@
 package examples
 
-import treeBuilder.TreeBuilder
+import treeBuilder.Tree
 
 class GeneralExample {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val treeBuilder = TreeBuilder<String>()
-            treeBuilder.addRoot(TreeBuilder.TreeNode("root"))
-            println(treeBuilder.root.name)
-            val root = treeBuilder.root
+            val tree = Tree<String>(Tree.TreeNode("root"))
+            val root = tree.root
             val rootList = mutableListOf(
-                "a0",
-                "a1",
-                "a2",
-                "a3"
+                "a0", "a1", "a2", "a3"
             )
             /**
-             * for the root you have to use addChildren() not addNodes()
+             * Add nodes to root
              */
-            root.addChildren(rootList)
+            tree.addNodes(root, Pair(intArrayOf(), rootList))
             val level1List1 = mutableListOf(
-                "b0",
-                "b1",
-                "b2"
+                "b0", "b1", "b2"
             )
             val level1List3 = mutableListOf(
-                "d0",
-                "d1",
-                "d2"
+                "d0", "d1", "d2"
             )
             val level1List4 = mutableListOf(
-                "e0",
-                "e1",
-                "e2"
+                "e0", "e1", "e2"
             )
             val level1List2 = mutableListOf(
-                "c0",
-                "c1",
-                "c2"
+                "c0", "c1", "c2"
             )
             val level2List1 = mutableListOf(
-                "f0",
-                "f1"
+                "f0", "f1"
             )
             val level2List2 = mutableListOf(
-                "g0",
-                "g1"
+                "g0", "g1"
             )
             val level2List3 = mutableListOf(
-                "h0",
-                "h1"
+                "h0", "h1"
             )
             val level3List1 = mutableListOf(
                 "i0"
@@ -77,56 +61,79 @@ class GeneralExample {
             val level3List8 = mutableListOf(
                 "p0"
             )
+
             /**
              * Adding each list to its respective path (passed in pairs)
              * check addNodes() documentation
              */
-            treeBuilder.addNodes(root,
-                Pair(intArrayOf(0),level1List1),
-                Pair(intArrayOf(1),level1List2),
-                Pair(intArrayOf(2),level1List3),
-                Pair(intArrayOf(3),level1List4),
-                Pair(intArrayOf(0,0),level2List1),
-                Pair(intArrayOf(0,1),level2List2),
-                Pair(intArrayOf(0,3),level2List3),
-                Pair(intArrayOf(0,0,0),level3List1),
-                Pair(intArrayOf(0,0,1),level3List2),
-                Pair(intArrayOf(0,1,0),level3List3),
-                Pair(intArrayOf(0,1,1),level3List4),
-                Pair(intArrayOf(0,2,0),level3List5),
-                Pair(intArrayOf(0,2,1),level3List6),
-                Pair(intArrayOf(0,3,0),level3List7),
-                Pair(intArrayOf(0,3,1),level3List8),
+
+            tree.addNodes(
+                root,
+                Pair(intArrayOf(0), level1List1),
+                Pair(intArrayOf(1), level1List2),
+                Pair(intArrayOf(2), level1List3),
+                Pair(intArrayOf(3), level1List4),
+                Pair(intArrayOf(0, 0), level2List1),
+                Pair(intArrayOf(0, 1), level2List2),
+                Pair(intArrayOf(0, 2), level2List3),
+                Pair(intArrayOf(0, 0, 0), level3List1),
+                Pair(intArrayOf(0, 0, 1), level3List2),
+                Pair(intArrayOf(0, 1, 0), level3List3),
+                Pair(intArrayOf(0, 1, 1), level3List4),
+                Pair(intArrayOf(0, 2, 0), level3List5),
+                Pair(intArrayOf(0, 2, 1), level3List6),
+                Pair(intArrayOf(0, 2, 0), level3List7),
+                Pair(intArrayOf(0, 2, 1), level3List8),
             )
 
             /**
              * one way to reference a node in the tree
              */
-            val node =
-                treeBuilder.root.childrenList[1].childrenList[1].childrenList[1]
+            val node = root.childrenList[0].childrenList[2].childrenList[0]
+
             /**
              * Another way to reference node in a tree
              */
-            val node2 = treeBuilder.root.getNode(mutableListOf(2, 3, 1))
+            val node2 = root.getNode(mutableListOf(0, 2, 1))
+
+
+            val attributes = mutableListOf<String>()
             /**
-             * change current position in the tree
+             * add attributes to node
              */
-            treeBuilder.pathToCurrentNode = node.getPath()
-            println("Path to ${node.name} is ${treeBuilder.getStringPath(treeBuilder.pathToCurrentNode)}")
+            node.addAttributes(attributes)
             /**
-             * change current position in the tree
+             * get attributes from a node
              */
-            treeBuilder.pathToCurrentNode = node2.getPath()
-            println("Path to ${node2.name} is ${treeBuilder.getStringPath(treeBuilder.pathToCurrentNode)}")
+            node.getAttributes()
+
+
+            tree.pathToCurrentNode = node.getPath()
+            println("Path to ${node.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+
+            tree.pathToCurrentNode = node2.getPath()
+            println("Path to ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+
+
             /**
-             * move pointer up
+             * Move your position in the tree up, if at the top, remain at the same place
              */
-            treeBuilder.movePointerUp()
-            println("Patn to parent of ${node2.name} is ${treeBuilder.getStringPath(treeBuilder.pathToCurrentNode)}")
+            tree.movePointerUp()
+            println("Path to parent of ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+
+
+            /**
+             * Prints out all leaves, each shifted by 20 * its depth
+             */
+            tree.printAllLeafNodes()
+
             /**
              *  Visualizing the whole tree
+             *  How to read visualization:
+             *  All nodes with (x) > (x) of the node left to it
+             *  and that are above that node are its children
              */
-            treeBuilder.visualizeTree()
+            tree.visualizeTree()
         }
     }
 }
