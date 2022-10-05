@@ -5,17 +5,20 @@ package treeBuilder
  *  For example: TreeNode<String> has its attributes in MutableList<String>
  */
 data class Tree<T>(var root: TreeNode<T>) {
+
     /**
      * @pathToCurrentNode - path to the node that the user is at currently
      * Used to store your location in the tree
      */
     var pathToCurrentNode = mutableListOf<TreeNode<T>>()
+
     /**
      * Set current location to root node on initialization
      */
     init {
         pathToCurrentNode = mutableListOf(this.root)
     }
+
     /**
      * @name name of a node
      * @nodeAttribute Attribute of a node, null by default
@@ -29,6 +32,7 @@ data class Tree<T>(var root: TreeNode<T>) {
         val childrenList: MutableList<TreeNode<T>> = mutableListOf()
         val childrenNamesList: MutableList<String> = mutableListOf()
         var depth = 0
+
         /**
          * Add a new single TreeNode to this TreeNode
          */
@@ -38,32 +42,38 @@ data class Tree<T>(var root: TreeNode<T>) {
             childrenList.add(node)
             childrenNamesList.add(node.name)
         }
+
         /**
          * Add children nodes to this node, pass a Mutable List with nodes' names
          */
         fun addChildren(childrenNames: MutableList<String>) = childrenNames.forEach {
             addChild(TreeNode(it))
         }
+
         /**
          * Add attributes (as MutableList<T>) to this node. Create Tree with type T that you want your attributes to have
          */
         fun addAttributes(attribute: MutableList<T>) {
             this.nodeAttributes = attribute
         }
+
         /**
          *  Get attributes of this node
          */
         fun getAttributes(): MutableList<T>? {
             return this.nodeAttributes
         }
+
         /**
          * Check if this node has children
          */
         fun hasChildren(): Boolean = childrenList.isNotEmpty()
+
         /**
          * Check if this node has parent
          */
         fun hasParent(): Boolean = parent !== null
+
         /**
          * Get path in Mutable List of TreeNode<T> from root node to this node, uses recursion
          */
@@ -75,6 +85,7 @@ data class Tree<T>(var root: TreeNode<T>) {
             path.add(this)
             return path
         }
+
         /**
          * Get a TreeNode object located at certain index in hierarchy, pass path as a MutableList<Int>
          */
@@ -89,6 +100,7 @@ data class Tree<T>(var root: TreeNode<T>) {
                 node
             }
         }
+
         /**
          * Return a new independent instance of this TreeNode (deep copy), uses recursion
          */
@@ -103,6 +115,7 @@ data class Tree<T>(var root: TreeNode<T>) {
             return newNode
         }
     }
+
     /**
      *  Use to make an independent instance of this treeBuilder (deep copy)
      */
@@ -116,6 +129,7 @@ data class Tree<T>(var root: TreeNode<T>) {
             pathToCurrentNode.removeLast()
         }
     }
+
     /**
      * @param rootNode node from which the relative path is constructed
      * @param pair consists of
@@ -141,6 +155,7 @@ data class Tree<T>(var root: TreeNode<T>) {
             }
         }
     }
+
     /**
      * Get String representation of a path
      */
@@ -151,6 +166,7 @@ data class Tree<T>(var root: TreeNode<T>) {
         }
         return s
     }
+
     /**
      *  Get all leaves (nodes that have no children) from this treeBuilder
      */
@@ -162,11 +178,13 @@ data class Tree<T>(var root: TreeNode<T>) {
         }
         return leafList
     }
+
     /**
      * Get all nodes in the tree
      * The nodes in the list are sorted deep to shallow and right to left
      */
     fun getAllNodes(): MutableList<TreeNode<T>> = getAllChildren(root)
+
     /**
      * Get all children nodes below the passed node
      */
@@ -178,6 +196,7 @@ data class Tree<T>(var root: TreeNode<T>) {
         childrenList.add(node)
         return childrenList
     }
+
     /**
      * Print all nodes in a node list, each node shifted by 20 * its depth
      */
@@ -186,6 +205,7 @@ data class Tree<T>(var root: TreeNode<T>) {
             println(" ".repeat(20 * it.depth) + "(${it.depth}) ${it.name}")
         }
     }
+
     /**
      * Prints out all leaves, each shifted by 20 * its depth
      */
@@ -194,6 +214,7 @@ data class Tree<T>(var root: TreeNode<T>) {
         println("All leaf nodes (amount = ${allLeafNodes.size}) are:")
         printNodesWithDepth(allLeafNodes)
     }
+
     /**
      *  Get visualization of the whole tree
      *  How to read visualization:
