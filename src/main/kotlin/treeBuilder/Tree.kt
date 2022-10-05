@@ -106,9 +106,8 @@ data class Tree<T>(var root: TreeNode<T>) {
     /**
      *  Use to make an independent instance of this treeBuilder (deep copy)
      */
-    fun clone(): Tree<T> {
-        return Tree(this.root.clone())
-    }
+    fun clone() = Tree(this.root.clone())
+
     /**
      * Move your current position to parent node, if no parent exists, remain at the same place
      */
