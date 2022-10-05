@@ -93,14 +93,17 @@ class MenuExample {
                 Pair(intArrayOf(2, 2), singleNotificationsActions),
                 Pair(intArrayOf(2, 3), multipleNotificationsActions)
             )
-
             /**
-             *  Visualizing the whole tree
+             *  Get visualization of the whole tree
              *  How to read visualization:
-             *  All nodes with (x) > (x) of the node left to it
+             *  All nodes with (x) = 1 + (x) of the node left to it
              *  and that are above that node are its children
              */
             tree.visualizeTree()
+            /**
+             *  Printing all leaf nodes
+             */
+            tree.printAllLeafNodes()
         }
     }
 

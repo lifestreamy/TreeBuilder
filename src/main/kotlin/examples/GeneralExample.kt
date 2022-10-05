@@ -61,12 +61,10 @@ class GeneralExample {
             val level3List8 = mutableListOf(
                 "p0"
             )
-
             /**
              * Adding each list to its respective path (passed in pairs)
              * check addNodes() documentation
              */
-
             tree.addNodes(
                 root,
                 Pair(intArrayOf(0), level1List1),
@@ -90,12 +88,10 @@ class GeneralExample {
              * one way to reference a node in the tree
              */
             val node = root.childrenList[0].childrenList[2].childrenList[0]
-
             /**
              * Another way to reference node in a tree
              */
             val node2 = root.getNode(mutableListOf(0, 2, 1))
-
 
             val attributes = mutableListOf<String>()
             /**
@@ -107,33 +103,36 @@ class GeneralExample {
              */
             node.getAttributes()
 
-
             tree.pathToCurrentNode = node.getPath()
             println("Path to ${node.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
 
             tree.pathToCurrentNode = node2.getPath()
             println("Path to ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
-
-
             /**
              * Move your position in the tree up, if at the top, remain at the same place
              */
             tree.movePointerUp()
             println("Path to parent of ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
-
-
             /**
              * Prints out all leaves, each shifted by 20 * its depth
              */
             tree.printAllLeafNodes()
-
             /**
-             *  Visualizing the whole tree
+             *  Get visualization of the whole tree
              *  How to read visualization:
-             *  All nodes with (x) > (x) of the node left to it
+             *  All nodes with (x) = 1 + (x) of the node left to it
              *  and that are above that node are its children
              */
             tree.visualizeTree()
+            /**
+             * clone tree (return a deep copy of it)
+             */
+            val clonedTree = tree.clone()
+            /**
+             * Adding new node "New Node" to the cloned tree as a last child of clonedTree.root and visualizing the cloned tree
+             */
+            clonedTree.addNodes(clonedTree.root, Pair(intArrayOf(), mutableListOf("New Node")))
+            clonedTree.visualizeTree()
         }
     }
 }
