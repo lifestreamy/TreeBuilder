@@ -6,26 +6,23 @@ Use jitpack.io to add this library (add code below to build.gradle), see example
 
 
 build.gradle:
-
-allprojects {
-
+```
+allprojects 
+{
     repositories
     {
-    
-        maven { url 'https://jitpack.io' }
-        
-    }
-    
+        maven { url 'https://jitpack.io' }    
+    } 
 }
-
-
+```
+```
 dependencies 
 {
 
     implementation 'com.github.lifestreamy:TreeBuilder:master-SNAPSHOT'
     
 }
-
+```
 
 
 And read documentation in the code, it provides all the needed info
