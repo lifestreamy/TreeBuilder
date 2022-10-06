@@ -8,14 +8,22 @@ Use jitpack.io to add this library (add code below to build.gradle), see example
 build.gradle:
 
 allprojects {
-    repositories {
+
+    repositories
+    {
+    
         maven { url 'https://jitpack.io' }
+        
     }
+    
 }
 
 
-dependencies {
-    implementation 'com.github.lifestreamy:TreeBuilder:-SNAPSHOT'
+dependencies 
+{
+
+    implementation 'com.github.lifestreamy:TreeBuilder:master-SNAPSHOT'
+    
 }
 
 
