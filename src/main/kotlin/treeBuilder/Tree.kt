@@ -1,22 +1,23 @@
 package treeBuilder
 
+
 /**
  *  Set T to the type of attributes that you want to attach to a node
  *  For example: TreeNode<String> has its attributes in MutableList<String>
  */
-data class Tree<T>(var root: TreeNode<T>) {
+class Tree<T>(var root: TreeNode<T>) {
 
     /**
      * @property pathToCurrentNode - path to the node that the user is at currently
      * Used to store your location in the tree
      */
-    var pathToCurrentNode = mutableListOf<TreeNode<T>>()
+    var pathToCurrentNode = mutableListOf<Int>()
 
     /**
      * Set current location to root node on initialization
      */
     init {
-        pathToCurrentNode = mutableListOf(this.root)
+        pathToCurrentNode = mutableListOf(0)
     }
 
     /**
@@ -26,18 +27,26 @@ data class Tree<T>(var root: TreeNode<T>) {
      * @property childrenNamesList - Mutable list with all children nodes' names of this node
      * @property parent - TreeNode that is a parent of this TreeNode. If TreeNode is the root node, parent = null
      * @property depth - depth of this node
+     * @property index - index of this node in the childrenList it belongs to
      */
     data class TreeNode<T>(var name: String, private var nodeAttributes: MutableList<T>? = null) {
         var parent: TreeNode<T>? = null
         val childrenList: MutableList<TreeNode<T>> = mutableListOf()
         val childrenNamesList: MutableList<String> = mutableListOf()
         var depth = 0
+            private set
+        var index = 0
+            private set
+        var childLowestIndex = 0
+            private set
 
         /**
          * Add a new single TreeNode to this TreeNode
          */
         fun addChild(node: TreeNode<T>) {
             node.parent = this
+            node.index = this.childLowestIndex
+            this.childLowestIndex++
             node.depth = this.depth + 1
             childrenList.add(node)
             childrenNamesList.add(node.name)
@@ -51,10 +60,10 @@ data class Tree<T>(var root: TreeNode<T>) {
         }
 
         /**
-         * Add attributes (as MutableList<T>) to this node. Create Tree with type T that you want your attributes to have
+         * Change/add attributes (as MutableList<T>) to this node. Create Tree with type T that you want your attributes to have
          */
-        fun addAttributes(attribute: MutableList<T>) {
-            this.nodeAttributes = attribute
+        fun changeAttributes(vararg attributes: T) {
+            this.nodeAttributes = attributes.toMutableList()
         }
 
         /**
@@ -75,22 +84,22 @@ data class Tree<T>(var root: TreeNode<T>) {
         fun hasParent(): Boolean = parent !== null
 
         /**
-         * Get path in Mutable List of TreeNode<T> from root node to this node, uses recursion
+         * Get path in Mutable List of Int from root node to this node, uses recursion
          */
-        fun getPath(): MutableList<TreeNode<T>> {
-            val path = mutableListOf<TreeNode<T>>()
+        fun getPath(): MutableList<Int> {
+            val path = mutableListOf<Int>()
             if (this.hasParent()) {
-                path.let { list1 -> this.parent!!.getPath().let(list1::addAll) }
+                path.let { this.parent!!.getPath().let(it::addAll) }
+                path.add(this.index)
             }
-            path.add(this)
             return path
         }
 
         /**
          * Get a TreeNode object located at certain index in hierarchy, pass path as a MutableList<Int>
          */
-        fun getNode(nodesIndices: MutableList<Int>? = null): TreeNode<T> {
-            if (nodesIndices.isNullOrEmpty()) return this
+        fun getNode(vararg nodesIndices: Int): TreeNode<T> {
+            if (nodesIndices.isEmpty()) return this
             return if (nodesIndices.size == 1) childrenList[nodesIndices[0]]
             else {
                 var node = childrenList[nodesIndices[0]]
@@ -117,7 +126,7 @@ data class Tree<T>(var root: TreeNode<T>) {
     }
 
     /**
-     *  Use to make an independent instance of this treeBuilder (deep copy)
+     *  Use to make an independent instance of this tree (deep copy)
      */
     fun clone() = Tree(this.root.clone())
 
@@ -132,7 +141,7 @@ data class Tree<T>(var root: TreeNode<T>) {
 
     /**
      * @param rootNode node from which the relative path is constructed
-     * @param pair consists of
+     * @param pairList consists of
      * 1) Path as an array
      * 2)MutableList<String> as a node list to add to that path
      * This method will add all node lists to their respective paths from each pair
@@ -160,10 +169,13 @@ data class Tree<T>(var root: TreeNode<T>) {
     /**
      * Get String representation of a path
      */
-    fun getStringPath(path: MutableList<TreeNode<String>>): String {
+    fun getStringPath(root: TreeNode<T>, vararg path: Int): String {
         var s = ""
-        path.forEach {
-            s += " -> ${it.name}"
+        var currentNode = root
+        s += currentNode.name
+        for(i in 0 until path.size) {
+            currentNode = currentNode.childrenList[path[i]]
+            s += " -> ${currentNode.name}"
         }
         return s
     }

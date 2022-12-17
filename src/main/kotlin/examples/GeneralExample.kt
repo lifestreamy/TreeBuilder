@@ -91,28 +91,32 @@ class GeneralExample {
             /**
              * Another way to reference node in a tree
              */
-            val node2 = root.getNode(mutableListOf(0, 2, 1))
+            val node2 = root.getNode(0, 2, 1)
 
-            val attributes = mutableListOf<String>()
+            val attributes = arrayOf<String>()
             /**
              * add attributes to node
              */
-            node.addAttributes(attributes)
+            node.changeAttributes(*attributes)
             /**
              * get attributes from a node
              */
             node.getAttributes()
 
             tree.pathToCurrentNode = node.getPath()
-            println("Path to ${node.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+            println(tree.pathToCurrentNode)
+            println(tree.root.getPath())
+            println(node2.getPath())
+            println("Path to ${node.name} from root is ${tree.getStringPath(tree.root,*node.getPath().toIntArray())}")
+            println("Path to ${node.name} from root is ${tree.getStringPath(tree.root,*tree.pathToCurrentNode.toIntArray())}") //the same
 
             tree.pathToCurrentNode = node2.getPath()
-            println("Path to ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+            println("Path to ${node2.name} is ${tree.getStringPath(tree.root, *tree.pathToCurrentNode.toIntArray())}")
             /**
              * Move your position in the tree up, if at the top, remain at the same place
              */
             tree.movePointerUp()
-            println("Path to parent of ${node2.name} is ${tree.getStringPath(tree.pathToCurrentNode)}")
+            println("Path to parent of ${node2.name} is ${tree.getStringPath(tree.root, *tree.pathToCurrentNode.toIntArray())}")
             /**
              * Prints out all leaves, each shifted by 20 * its depth
              */
