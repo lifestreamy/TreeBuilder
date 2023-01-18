@@ -29,7 +29,7 @@ class Tree<T>(var root: TreeNode<T>) {
      * @property depth - depth of this node
      * @property index - index of this node in the childrenList it belongs to
      */
-    data class TreeNode<T>(var name: String, private var nodeAttributes: MutableList<T>? = null) {
+    data class TreeNode<T>(var name: String, private var nodeAttributes: MutableList<T> = mutableListOf()) {
         var parent: TreeNode<T>? = null
         val childrenList: MutableList<TreeNode<T>> = mutableListOf()
         val childrenNamesList: MutableList<String> = mutableListOf()
@@ -69,8 +69,8 @@ class Tree<T>(var root: TreeNode<T>) {
         /**
          *  Get attributes of this node
          */
-        fun getAttributes(): MutableList<T>? {
-            return this.nodeAttributes
+        fun getAttributes(): MutableList<T> {
+            return this.nodeAttributes.map { it }.toMutableList()
         }
 
         /**
@@ -114,8 +114,7 @@ class Tree<T>(var root: TreeNode<T>) {
          * Return a new independent instance of this TreeNode (deep copy), uses recursion
          */
         fun clone(): TreeNode<T> {
-            val newNode = TreeNode(this.name, this.nodeAttributes)
-            newNode.parent = this.parent
+            val newNode = TreeNode(this.name, this.nodeAttributes.map { it }.toMutableList())
             newNode.depth = this.depth
             this.childrenList.forEach {
                 val newChild = it.clone()
@@ -173,7 +172,7 @@ class Tree<T>(var root: TreeNode<T>) {
         var s = ""
         var currentNode = root
         s += currentNode.name
-        for(i in 0 until path.size) {
+        for (i in 0 until path.size) {
             currentNode = currentNode.childrenList[path[i]]
             s += " -> ${currentNode.name}"
         }
