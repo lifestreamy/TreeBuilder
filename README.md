@@ -1,9 +1,9 @@
 # TreeBuilder
 This library is useful for easy and fast building of tree structures (made specifically for menus).
 
-It supports imperative, declarative and mixed ways of building the menus, storing current location in the tree for navigation, cloning the trees and much more. 
+It supports imperative, declarative and mixed ways of building the menus, storing current location in the tree for navigation, cloning the trees, and much more. 
 
-Each node has a unique path, and can be reached easily.
+Each node has a unique path and can be reached easily.
 
 # Usage example
 ```
@@ -43,7 +43,7 @@ val tree = tree {
 
 # Setup
 
-For now use https://www.jitpack.io to add this library (add the code below to build.gradle), see examples folder for usage scenarios.
+For now, use [Jitpack](https://www.jitpack.io) to add this library (add the code below to build.gradle), check the `examples` folder for different usage scenarios and explanations.
 
 [Link to the library on jitpack](https://www.jitpack.io/#lifestreamy/TreeBuilder)
 
@@ -67,7 +67,7 @@ dependencies
 ```
 
 
-Read the documentation in the code, it provides all the needed info. 
+Read the documentation in the code, it should provide all the needed info. 
 
 # Contribution 
 
