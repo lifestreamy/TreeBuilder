@@ -49,20 +49,15 @@ For now, use [Jitpack](https://www.jitpack.io) to add this library (add the code
 
 ## build.gradle:
 ```
-allprojects 
-{
-    repositories
-    {
+allprojects {
+    repositories{
         maven { url 'https://jitpack.io' }    
     } 
 }
 ```
 ```
-dependencies 
-{
-
-    implementation 'com.github.lifestreamy:TreeBuilder:master-2.0'
-    
+dependencies {
+    implementation 'com.github.lifestreamy:TreeBuilder:v2.0' 
 }
 ```
 
