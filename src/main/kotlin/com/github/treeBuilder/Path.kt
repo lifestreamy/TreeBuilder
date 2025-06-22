@@ -1,10 +1,9 @@
 package com.github.treeBuilder
 
 /** An immutable representation of a path, supporting convenient concatenation
- *  Todo not used right now
  * */
 @ConsistentCopyVisibility
-data class Path internal constructor(val path: IntArray) {
+data class Path internal constructor(private val path: IntArray) {
     companion object {
         val ROOT: Path = Path(intArrayOf())
     }
