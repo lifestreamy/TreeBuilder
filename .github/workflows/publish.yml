@@ -3,7 +3,8 @@ name: Publish Kotlin Library
 on:
   release:
     types: [published]
-
+  workflow_dispatch:
+  
 jobs:
   publish:
     runs-on: ubuntu-latest
