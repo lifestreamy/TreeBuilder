@@ -6,7 +6,11 @@ plugins {
 }
 
 group = "com.github.lifestreamy.treebuilder"
-version = "2.0.2"
+
+val releaseVersion: String? by project
+
+version = releaseVersion?.removePrefix("v") ?: "0.0.0-SNAPSHOT"
+
 
 kotlin {
     jvmToolchain(17)
