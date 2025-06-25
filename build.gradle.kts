@@ -48,18 +48,6 @@ val sourcesJar by tasks.register<Jar>("sourcesJar") {
 }
 
 
-// Configure signing plugin to use in-memory keys from Gradle properties
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-
-    // Only configure signing if key and password are provided (e.g., in CI)
-    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications)
-    }
-}
-
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
@@ -69,22 +57,26 @@ mavenPublishing {
     pom {
         name.set("TreeBuilder")
         description.set("Small Kotlin library for building tree structures that can be traversed, mainly for menus")
+        inceptionYear.set("2023")
         url.set("https://github.com/lifestreamy/TreeBuilder")
         licenses {
             license {
                 name.set("Apache-2.0")
                 url.set("https://opensource.org/licenses/Apache-2.0")
+                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
         developers {
             developer {
                 id.set("lifestreamy")
                 name.set("Tim K.")
+                url.set("https://github.com/lifestreamy/")
             }
         }
         scm {
             url.set("https://github.com/lifestreamy/TreeBuilder")
             connection.set("scm:git:git://github.com/lifestreamy/TreeBuilder.git")
+            developerConnection.set("scm:git:ssh://git@github.com/lifestreamy/TreeBuilder.git")
         }
     }
 }
