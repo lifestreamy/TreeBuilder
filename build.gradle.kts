@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "2.1.10"
     id("org.jetbrains.dokka") version "2.0.0"
     id("com.vanniktech.maven.publish") version "0.33.0"
+    signing
 }
 
 group = "com.github.lifestreamy.treebuilder"
@@ -11,33 +12,9 @@ kotlin {
     jvmToolchain(17)
 }
 
-mavenPublishing {
-    publishToMavenCentral(automaticRelease = true)
-    signAllPublications()
 
-    coordinates(group.toString(), "treebuilder", version.toString())
-
-    pom {
-        name.set("TreeBuilder")
-        description.set("Kotlin library for building tree structures")
-        url.set("https://github.com/lifestreamy/TreeBuilder")
-        licenses {
-            license {
-                name.set("Apache-2.0")
-                url.set("https://opensource.org/licenses/Apache-2.0")
-            }
-        }
-        developers {
-            developer {
-                id.set("lifestreamy")
-                name.set("Tim K.")
-            }
-        }
-        scm {
-            url.set("https://github.com/lifestreamy/TreeBuilder")
-            connection.set("scm:git:git://github.com/lifestreamy/TreeBuilder.git")
-        }
-    }
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.dokkaHtml {
@@ -59,9 +36,48 @@ val sourcesJar by tasks.register<Jar>("sourcesJar") {
     from(sourceSets.main.get().allSource)
 }
 
-tasks.test {
-    useJUnitPlatform()
+
+// Configure signing plugin to use in-memory keys from Gradle properties
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+
+    // Only configure signing if key and password are provided (e.g., in CI)
+    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications)
+    }
 }
+
+mavenPublishing {
+    publishToMavenCentral(automaticRelease = true)
+    signAllPublications()
+
+    coordinates(group.toString(), "treebuilder", version.toString())
+
+    pom {
+        name.set("TreeBuilder")
+        description.set("Small Kotlin library for building tree structures that can be traversed, mainly for menus")
+        url.set("https://github.com/lifestreamy/TreeBuilder")
+        licenses {
+            license {
+                name.set("Apache-2.0")
+                url.set("https://opensource.org/licenses/Apache-2.0")
+            }
+        }
+        developers {
+            developer {
+                id.set("lifestreamy")
+                name.set("Tim K.")
+            }
+        }
+        scm {
+            url.set("https://github.com/lifestreamy/TreeBuilder")
+            connection.set("scm:git:git://github.com/lifestreamy/TreeBuilder.git")
+        }
+    }
+}
+
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
