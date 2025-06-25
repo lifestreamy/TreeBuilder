@@ -2,10 +2,9 @@ plugins {
     kotlin("jvm") version "2.1.10"
     id("org.jetbrains.dokka") version "2.0.0"
     id("com.vanniktech.maven.publish") version "0.33.0"
-    signing
 }
 
-group = "com.github.lifestreamy.treebuilder"
+group = "io.github.lifestreamy"
 
 val defaultUnknownVersion = "0.0.0-SNAPSHOT"
 
