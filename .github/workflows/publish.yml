@@ -48,7 +48,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_SIGNING_PASSWORD }}
-        run: ./gradlew publishAllPublicationsToMavenCentral -Pversion=$RELEASE_VERSION --no-daemon
+        run: ./gradlew publishToMavenCentral --no-configuration-cache -Pversion=$RELEASE_VERSION --no-daemon
 
       - name: Deploy Dokka HTML docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
