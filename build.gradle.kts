@@ -7,14 +7,16 @@ plugins {
 
 group = "com.github.lifestreamy.treebuilder"
 
-
 val defaultUnknownVersion = "0.0.0-SNAPSHOT"
 
 // Simple semantic versioning pattern: digits(any number of).digits.digits (optionally with "-SNAPSHOT" at the end)
 fun String?.isValidVersion(): Boolean = this?.matches(Regex("""^v?(\d+\.\d+\.\d+)(-SNAPSHOT)?$""")) == true
 
 val releaseVersion: String? by project
-version = if (releaseVersion.isValidVersion()) releaseVersion!!.removePrefix("v") else {
+version = if (releaseVersion.isValidVersion()) {
+    println("Valid version supplied: using $releaseVersion")
+    releaseVersion!!.removePrefix("v")
+} else {
     println("Warning: Invalid or missing version '$releaseVersion', falling back to $defaultUnknownVersion")
     defaultUnknownVersion
 }
