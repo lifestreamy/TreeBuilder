@@ -40,7 +40,7 @@ jobs:
           fi
 
       - name: Build and generate Dokka docs
-        run: ./gradlew clean build dokkaHtml dokkaJavadoc -Pversion=$RELEASE_VERSION
+        run: ./gradlew clean build dokkaHtml dokkaJavadoc -PreleaseVersion=$RELEASE_VERSION
 
       - name: Publish to Maven Central
         env:
