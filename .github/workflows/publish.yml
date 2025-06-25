@@ -4,7 +4,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-  
+    inputs:
+      version:
+        description: 'Version to publish (overrides release tag)'
+        required: false
+        default: ''
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -13,14 +17,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
+      - name: Determine version to use
+        id: set_version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if [[ -z "${{ github.event.inputs.version }}" ]]; then
+              echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+            else
+              echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+            fi
+          else
+            echo "RELEASE_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          fi
+
       - name: Build and generate Dokka docs
-        run: ./gradlew clean build dokkaHtml dokkaJavadoc
+        run: ./gradlew clean build dokkaHtml dokkaJavadoc -Pversion=$RELEASE_VERSION
 
       - name: Publish to Maven Central
         env:
@@ -28,7 +48,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_SIGNING_PASSWORD }}
-        run: ./gradlew publishAllPublicationsToMavenCentral --no-daemon
+        run: ./gradlew publishAllPublicationsToMavenCentral -Pversion=$RELEASE_VERSION --no-daemon
 
       - name: Deploy Dokka HTML docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
