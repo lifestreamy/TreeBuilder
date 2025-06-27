@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Build and save Dokka docs to gh-pages branch
+name: Generate Dokka docs and push to gh-pages branch
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
           java-version: 17
           
       - name: Build and generate Dokka docs
-        run: ./gradlew clean build dokkaHtml dokkaJavadoc -PreleaseVersion=$RELEASE_VERSION
+        run: ./gradlew dokkaHtml
 
       - name: Deploy Dokka HTML docs to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v4
