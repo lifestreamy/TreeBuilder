@@ -36,6 +36,14 @@ jobs:
       - name: Build and generate Dokka docs
         run: ./gradlew dokkaHtml
 
+      - name: Verify Dokka HTML docs were generated
+        run: |
+          if [ -z "$(ls -A build/dokka/html)" ]; then
+            echo "Error: Dokka HTML output directory is empty!"
+            exit 1
+          fi
+
+      
       - name: Deploy Dokka HTML docs to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v4
         with:
