@@ -34,7 +34,7 @@ jobs:
           java-version: 17
           
       - name: Build and generate Dokka docs
-        run: ./gradlew dokkaHtml
+        run: ./gradlew clean build dokkaHtml
 
       - name: Verify Dokka HTML docs were generated
         run: |
