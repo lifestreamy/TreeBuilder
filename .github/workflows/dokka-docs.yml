@@ -23,7 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+        with:
+          fetch-depth: 0   # Fetch full history including all tags and branches
+          
       - name: Make gradlew executable
         run: chmod +x ./gradlew
         
