@@ -32,9 +32,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+
+      - name: Get the latest Git tag to supply to gradle in later steps
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          VERSION=${VERSION#v}
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
           
       - name: Build and generate Dokka docs
-        run: ./gradlew dokkaGenerate
+        run: ./gradlew dokkaGenerate -PreleaseVersion=${{ env.RELEASE_VERSION }}
 
       - name: Verify Dokka HTML docs were generated
         run: |
